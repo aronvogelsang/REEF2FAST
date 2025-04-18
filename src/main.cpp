@@ -8,10 +8,10 @@ namespace fs = std::filesystem;
 int main() {
 
     std::cout << "**************************************************************************\n";
-    std::cout << "*  REEF2FAST v2.0 - OpenFAST Input Generator for REEF3D Wavefields       *\n";
+    std::cout << "*  REEF2FAST v2.1 - OpenFAST Input Generator for REEF3D Wavefields       *\n";
     std::cout << "*                                                                        *\n";    
     std::cout << "*  GitHub: https://github.com/aronvogelsang/REEF2FAST                    *\n";
-    std::cout << "*  Author: Aron Vogelsang                                                *\n";
+    std::cout << "*  Developer: Aron Vogelsang                                             *\n";
     std::cout << "*  License: GNU General Public License v3.0 (GPL-3.0)                    *\n";
     std::cout << "*                                                                        *\n";
     std::cout << "*  This program generates OpenFAST input files based on the REEF3D       *\n";
