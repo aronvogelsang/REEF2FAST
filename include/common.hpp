@@ -1,52 +1,34 @@
-#ifndef COMMON_HPP
-#define COMMON_HPP
+#pragma once
 
-#include <vector>
 #include <string>
-#include <sstream>
-#include <iomanip>
+#include <vector>
 
-struct InterpolatedWavefield;  // Forward declaration
-
+// Utility: Rounds to nearest multiple of precision (default 1e-7)
 inline double round_to(double value, double precision = 1e-7) {
     return std::round(value / precision) * precision;
 }
 
+// Finds the first CSV wavefield file in the given directory
 std::string find_wavefield_file(const std::string& directory);
 
-/**
- * Represents a single data point in the wavefield.
- * All coordinates and field values are in OpenFAST convention.
- */
-/*struct DataPoint {
-    int timestep;
-    double x, y, z;
-    double vx, vy, vz;
-    double ax, ay, az;
-    double pressure;
-    double elevation;
-};*/
-
-
+// Reads z_max (maximum z value) from control.txt (B 10 block)
 double read_z_max(const std::string& filename);
 
-std::string format_scientific(double value);
-
-/*std::vector<DataPoint> read_wavefield_csv(const std::string& filename);*/
-
+// Reads wave_dt and wave_tmax from ctrl.txt
 bool read_wave_params(const std::string& filename, double& wave_dt, double& wave_tmax);
 
-bool read_control_file(const std::string& filename, double& X_MIN, double& X_MAX, 
-    double& Y_MIN, double& Y_MAX, double& Z_MIN, double& Z_MAX, 
-    int& NX, int& NY, int& NZ);
+// Reads full grid definition from control.txt (B 2 and B 10)
+bool read_control_file(const std::string& filename,
+                       double& X_MIN, double& X_MAX,
+                       double& Y_MIN, double& Y_MAX,
+                       double& Z_MIN, double& Z_MAX,
+                       int& NX, int& NY, int& NZ);
 
-bool write_elevation_csv(const InterpolatedWavefield& wf, const std::string& filename);
-
+// Determines if case is 2D by checking if NY == 1 in control.txt
 bool is_2D_case(const std::string& control_file);
 
+// Formats a double into scientific notation for SeaState output
+std::string format_scientific(double value);
+
+// Utility: Generates a linearly spaced grid with N points
 std::vector<double> generate_linear_grid(double min_val, double max_val, int num_points);
-
-bool read_timestep_from_control(const std::string& filename, double& delta_t);
-
-
-#endif // COMMON_HPP

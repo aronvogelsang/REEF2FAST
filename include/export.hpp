@@ -1,29 +1,36 @@
-// export.hpp
 #pragma once
 
-#include "cloud.hpp"
+#include "structs.hpp"
 #include <string>
 #include <functional>
 
 /**
- * Writes a specific wave kinematics component (e.g. vx, ax, pressure) to a SeaState-formatted .XXX file.
+ * Writes a single wave kinematics component (e.g. vx, ax, pressure)
+ * to a SeaState-formatted .XXX file.
  *
- * @param wf              Interpolated wavefield
+ * @param wf              Interpolated wavefield at current timestep
  * @param filename        Output filename (e.g. "REEF2FAST.Vxi")
- * @param component_name  Name of the component ("vx", "pressure", etc.)
- * @param description     Human-readable description written in header
- * @param accessor        Lambda or function to access the desired field from a WavefieldEntry
- * @param wave_dt         Timestep in seconds (from ctrl.txt)
- * @param wave_tmax       Total wave time (from ctrl.txt)
+ * @param component_name  Internal name of the field ("vx", "pressure", etc.)
+ * @param description     Human-readable description for the header
+ * @param accessor        Lambda to extract the relevant value from a WavefieldEntry
+ * @param wave_dt         Time step in seconds
+ * @param timestep        Current timestep index
+ * @param append          If true, appends to existing file instead of overwriting
  */
-void write_wave_component(const InterpolatedWavefield& wf,
+void write_wave_component(const Wavefield& wf,
                           const std::string& filename,
                           const std::string& component_name,
                           const std::string& description,
                           std::function<double(const WavefieldEntry&)> accessor,
-                          double wave_dt, double wave_tmax);
+                          double wave_dt,
+                          int timestep,
+                          bool append = false);
 
 /**
- * Calls write_wave_component() for all standard wave fields (vx, vy, vz, ax, ay, az, pressure).
+ * Writes all standard fields (vx, vy, vz, ax, ay, az, pressure)
+ * for the given timestep in SeaState format.
  */
-void generate_all_wavefiles(const InterpolatedWavefield& wf, double wave_dt, double wave_tmax);
+void generate_all_wavefiles(const Wavefield& wf,
+                            double wave_dt,
+                            int timestep,
+                            bool append = false);

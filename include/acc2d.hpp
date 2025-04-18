@@ -1,13 +1,14 @@
 #pragma once
 
-#include "cloud.hpp"
-#include <string>
+#include "structs.hpp"
 
 /**
- * Computes acceleration components ax and az in a 2D wavefield.
- * The y-direction (ay) is set to 0.0 since there is no variation in y.
- *
- * @param wf Interpolated wavefield data
- * @param delta_t Timestep used for central differences
+ * Computes 2D acceleration (ax, az) for each point in the interpolated wavefield.
+ * Assumes vy = ay = 0.0 for all entries.
  */
-void computeAcceleration2D(InterpolatedWavefield& wf, double delta_t);
+void computeAcceleration2D_from_context(
+    const std::vector<WavefieldEntry>& prev,
+    std::vector<WavefieldEntry>& curr,
+    const std::vector<WavefieldEntry>& next,
+    double delta_t
+);

@@ -1,29 +1,38 @@
-// write_out.cpp
+#include "write_out.hpp"
 #include "common.hpp"
-#include "cloud.hpp"
 #include <fstream>
 #include <iostream>
 
-bool write_out_csv(const InterpolatedWavefield& wf, const std::string& filename) {
-    std::ofstream out(filename);
+bool write_out_csv(const std::vector<WavefieldEntry>& timestep_data,
+                   const std::string& filename,
+                   int timestep,
+                   bool append) {
+    std::ofstream out;
+
+    if (append) {
+        out.open(filename, std::ios::app);
+    } else {
+        out.open(filename);
+    }
+
     if (!out.is_open()) {
-        std::cerr << "Error: Could not open " << filename << " for writing." << std::endl;
+        std::cerr << "[write_out_csv] Error: Could not open " << filename << " for writing.\n";
         return false;
     }
 
-    out << "timestep,x,y,z,u,v,w,pressure,eta,ax,ay,az\n";
-
-    for (size_t t = 0; t < wf.timesteps.size(); ++t) {
-        const auto& timestep_data = wf.timesteps[t];
-        for (size_t i = 0; i < wf.grid_points.size(); ++i) {
-            const auto& pt = wf.grid_points[i];
-            const auto& e = timestep_data[i];
-            out << t << "," << pt[0] << "," << pt[1] << "," << pt[2] << ","
-                << e.vx << "," << e.vy << "," << e.vz << ","
-                << e.pressure << "," << e.elevation << ","
-                << e.ax << "," << e.ay << "," << e.az << "\n";
-        }
+    // Write header if not appending
+    if (!append) {
+        out << "timestep,x,y,z,vx,vy,vz,pressure,elevation,ax,ay,az\n";
     }
 
+    for (const auto& e : timestep_data) {
+        out << timestep << ","
+            << e.x << "," << e.y << "," << e.z << ","
+            << e.vx << "," << e.vy << "," << e.vz << ","
+            << e.pressure << "," << e.elevation << ","
+            << e.ax << "," << e.ay << "," << e.az << "\n";
+    }
+
+    out.close();
     return true;
 }

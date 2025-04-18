@@ -1,20 +1,6 @@
-#include "cloud.hpp"
-#include "acc.hpp"
-#include "elevation_geo.hpp"
-#include "elevation_elev.hpp"
-#include "genSeaState.hpp"
-#include "genAyi.hpp"
-#include "export.hpp"
-#include "export_elevation.hpp"
+#include "streamingpipeline.hpp"
 #include "common.hpp"
-#include "write_out.hpp"
-#include "cloud2d.hpp"
-#include "elevation_elev2d.hpp"
-#include "elevation_geo2d.hpp"
-#include "inflate2d.hpp"
-#include "acc2d.hpp"
 #include <iostream>
-#include <fstream>
 #include <filesystem>
 
 namespace fs = std::filesystem;
@@ -22,9 +8,9 @@ namespace fs = std::filesystem;
 int main() {
 
     std::cout << "**************************************************************************\n";
-    std::cout << "*  REEF2FAST v1.0 - OpenFAST Input Generator for REEF3D Wavefields       *\n";
+    std::cout << "*  REEF2FAST v2.0 - OpenFAST Input Generator for REEF3D Wavefields       *\n";
     std::cout << "*                                                                        *\n";    
-    std::cout << "*  GitHub: https://github.com/REEF2FAST                                  *\n";
+    std::cout << "*  GitHub: https://github.com/aronvogelsang/REEF2FAST                    *\n";
     std::cout << "*  Author: Aron Vogelsang                                                *\n";
     std::cout << "*  License: GNU General Public License v3.0 (GPL-3.0)                    *\n";
     std::cout << "*                                                                        *\n";
@@ -70,163 +56,79 @@ int main() {
     std::cout << "\n";
     std::cout << "\n";
 
-    std::string mode;
-    std::string csv_reply;
-    double Y_total;
-    int NY_usr;
-    InterpolationResult result;
-    InterpolatedWavefield* interp_result = nullptr;
-    WavefieldByTime* raw_wavefield = nullptr;
-    double wave_dt = 0.0;
-    std::string wavefield_path;
-
-    // User chooses elevation mode
-    std::cout << "\nWhich model for elevation computation?\n";
-    std::cout << "Type 'z' for geometric (z_max) or 'e' for hydrodynamic (eta): ";
-    std::cin >> mode;
-
-    if (mode != "z" && mode != "e") {
-        std::cerr << "Invalid input. Use 'z' or 'e'.\n";
-        return 1;
-    }
-
-    // User chooses if he wants the full interpolated wavefield
-    bool csv_enabled = false;
-    std::cout << "\nOutput file with all interpolated fields (timestep,point,vel,pressure,eta,acc) required? (y/n): ";
-    std::cin >> csv_reply;
-    csv_enabled = (std::tolower(csv_reply[0]) == 'y');
-
-    // Create output directory if it does not exist
+    // Ensure output folder exists
     if (!fs::exists("../output")) {
         fs::create_directory("../output");
     }
 
-    // Detect 2D case
+    // Detect if case is 2D based on Y-dimension in control.txt
     bool is2D = is_2D_case("../data/control.txt");
-    if (is2D) {
-        std::cout << "\nDetected 2D wavefield. Please define Y domain manually.\n";
-        std::cout << "Enter domain width in Y-direction (in meters): ";
-        std::cin >> Y_total;
-        std::cout << "Enter number of grid points in Y-direction (NY >= 4 and NY%2 = 0): ";
-        std::cin >> NY_usr;
 
-        while (NY_usr < 4 || NY_usr % 2 != 0) {
-            std::cerr << "Invalid input. NY must be NY >= 4 and NY%2 = 0.\n";
-            std::cout << "Enter number of grid points in Y-direction (NY >= 4 and NY%2 = 0): ";
-            std::cin >> NY_usr;
-        }
-
-    } else {
-        std::cout << "Detected 3D wavefield. Running REEF2FAST in 3D mode.\n";
+    // Ask user for elevation method
+    std::string elevation_mode;
+    std::cout << "Surface elevation method ('z' = geometric, 'e' = hydrodynamic): ";
+    std::cin >> elevation_mode;
+    if (elevation_mode != "z" && elevation_mode != "e") {
+        std::cerr << "Invalid input. Use 'z' or 'e'.\n";
+        return 1;
     }
 
-    std::cout << "\nREEF2FAST WAVEFIELD PIPELINE STARTED\n";
+    // Ask user whether to write CSV export
+    bool write_csv = false;
+    std::string csv_answer;
+    std::cout << "Write CSV output (interpolated_wavefield.csv)? (y/n): ";
+    std::cin >> csv_answer;
+    if (!csv_answer.empty() && (csv_answer[0] == 'y' || csv_answer[0] == 'Y')) {
+        write_csv = true;
+    }
 
+    // If 2D, ask for manual y-domain and NY input
+    double y_total = 0.0;
+    int ny_usr = 0;
+    if (is2D) {
+        std::cout << "\nDetected 2D wavefield. Manual Y-domain input required.\n";
+        std::cout << "Enter Y domain width (in meters): ";
+        std::cin >> y_total;
+
+        std::cout << "Enter number of grid points NY (even number >= 4): ";
+        std::cin >> ny_usr;
+        while (ny_usr < 4 || ny_usr % 2 != 0) {
+            std::cerr << "NY must be even and >= 4. Try again: ";
+            std::cin >> ny_usr;
+        }
+    } else {
+        std::cout << "\nDetected 3D wavefield.\n";
+    }
+
+    // Automatically detect wavefield CSV file in ../data/
+    std::string wavefield_file;
     try {
-        wavefield_path = find_wavefield_file("../data/");
+        wavefield_file = find_wavefield_file("../data/");
     } catch (const std::exception& e) {
-        std::cerr << e.what() << std::endl;
+        std::cerr << e.what() << "\n";
         return 1;
     }
-        
 
-       
+    // Launch the streaming pipeline
+    try {
+        StreamingPipeline pipeline(
+            wavefield_file,
+            "../data/control.txt",
+            "../data/ctrl.txt",
+            is2D,
+            elevation_mode,
+            write_csv,
+            y_total,
+            ny_usr
+        );
 
-       
-    
-        
-       
-    
-    if (is2D) {
-    
-        // Step 1: Interpolation    
-        std::cout << "\nStep 1: Interpolating 2D wavefield...\n";    
-        result = interpolate_full_wavefield_2d(wavefield_path, "../data/control.txt");    
-        interp_result = &result.interpolated;
-        raw_wavefield = &result.raw_data;    
-        std::cout << "Interpolation complete.\n";
-    
-        // Step 2: Surface elevation (z or elevation based)
-        std::cout << "\nStep 2: Computing surface elevation (2D)...\n";
-        if (mode == "z") {
-             compute_surface_elevation_geo_2d(*interp_result, *raw_wavefield);
-        } else {
-            compute_surface_elevation_from_elev_2d(*interp_result, *raw_wavefield);
-        }
-        std::cout << "Elevation computed.\n";
-    } else {    
-    
-        // Step 1: Interpolation
-        std::cout << "\nStep 1: Interpolating 3D wavefield...\n";
-        result = interpolate_full_wavefield(wavefield_path, "../data/control.txt");
-        interp_result = &result.interpolated;
-        raw_wavefield = &result.raw_data;
-        std::cout << "Interpolation complete.\n";
-    
-        // Step 2: Surface elevation (z or elevation based)
-        std::cout << "\nStep 2: Computing surface elevation (3D)...\n";
-        if (mode == "z") {
-            compute_surface_elevation(*interp_result, *raw_wavefield);
-        } else {
-            compute_surface_elevation_from_elev(*interp_result, *raw_wavefield);
-        }
-        std::cout << "Elevation computed.\n";
-    }
-    
-    // Step 3: Free raw wavefield from memory
-    WavefieldByTime().swap(*raw_wavefield);
-    
-    // Step 4: Compute acceleration (2D or 3D)
-    std::cout << "\nStep 3: Computing acceleration...\n";
-    if (!read_timestep_from_control("../data/ctrl.txt", wave_dt)) {
-        std::cerr << "Failed to read timestep from control file.\n";
+        pipeline.run();
+        std::cout << "\nREEF2FAST pipeline finished successfully.\n";
+
+    } catch (const std::exception& e) {
+        std::cerr << "\nPipeline failed: " << e.what() << "\n";
         return 1;
     }
-    
-    if (is2D) {
-        computeAcceleration2D(*interp_result, wave_dt);
-    } else {
-        computeAcceleration(*interp_result, wave_dt);
-    }
-        std::cout << "Acceleration computed.\n";
 
-    // 2D Wavefield inflation        
-        if (is2D) {
-            inflate_wavefield_y(*interp_result, Y_total, NY_usr);}
-
-        // Step 4: Generate SeaState input
-        std::cout << "\nStep 4: Generating SeaState input file...\n";
-        double X_MIN, X_MAX, Y_MIN, Y_MAX, Z_MIN, Z_MAX;
-        int NX, NY, NZ;
-        double sim_time, wave_hs, wave_tp;
-        if (!read_control_file("../data/control.txt", X_MIN, X_MAX, Y_MIN, Y_MAX, Z_MIN, Z_MAX, NX, NY, NZ)) return 1;
-        if (!read_wave_parameters("../data/ctrl.txt", sim_time, wave_dt, wave_hs, wave_tp)) return 1;
-
-        if (is2D) {
-            Y_MIN = - Y_total;
-            Y_MAX = Y_total;
-            NY    = NY_usr;
-        }
-
-        generate_seastate(X_MIN, X_MAX, Y_MIN, Y_MAX, Z_MIN, Z_MAX, NX, NY, NZ, sim_time, wave_dt, wave_hs, wave_tp);
-        std::cout << "REEF2FAST.dat written.\n";
-
-        // Step 5: Export .XXX files
-        std::cout << "\nStep 5: Exporting SeaState wave component files...\n";
-        generate_all_wavefiles(*interp_result, wave_dt, sim_time);
-        write_surface_elevation(*interp_result, "REEF2FAST.Elev", wave_dt, sim_time);
-        std::cout << "All SeaState files written.\n";
-
-
-        // Optional CSV Output
-        if (csv_enabled) {
-            std::cout << "\nStep 6: Writing combined CSV...\n";
-            write_out_csv(*interp_result, "../output/interpolated_wavefield.csv");
-            std::cout << "CSV written to interpolated_wavefield.csv\n";
-        }
-
-    std::cout << "\nProgram finished successfully.\n";        return 0;
-   
+    return 0;
 }
-
-

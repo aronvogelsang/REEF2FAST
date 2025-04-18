@@ -1,16 +1,15 @@
-// elevation_elev.hpp
 #pragma once
 
-#include "cloud.hpp"
-#include <string>
+#include "structs.hpp"
 
 /**
- * Computes the surface elevation for each point in the interpolated wavefield.
- * Elevation is determined based on the maximum elevation value at each unique (x, y)
- * in the raw wavefield (not based on z), and then interpolated onto the target grid.
+ * Interpolates surface elevation onto the target grid for one timestep.
+ * Elevation is extracted from the REEF3D elevation values (eta) by taking
+ * the maximum at each (x, y) location and interpolating onto the SeaState grid.
  *
- * @param wf The interpolated wavefield (will be updated in-place)
- * @param original_data The original (non-interpolated) REEF3D wavefield data
+ * @param target Interpolated wavefield (to be updated)
+ * @param raw    Raw REEF3D wavefield data at current timestep
  */
-void compute_surface_elevation_from_elev(InterpolatedWavefield& wf,
-                                         const WavefieldByTime& original_data);
+void compute_surface_elevation_from_elev_single_timestep(
+    std::vector<WavefieldEntry>& target,
+    const std::vector<WavefieldEntry>& raw);
