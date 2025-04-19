@@ -1,6 +1,6 @@
 # REEF2FAST
 
-**Version:** 2.1  
+**Version:** 2.2  
 **Developer:** Aron Vogelsang  
 **License:** GNU GPL v3.0  
 **Repository:** https://github.com/aronvogelsang/REEF2FAST  
