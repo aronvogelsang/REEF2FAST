@@ -135,6 +135,9 @@ void stream_wavefield_with_context_2d(
         // Skip all points not from the selected y-slice
         if (std::abs(entry.y - y_ref) > 1e-6) continue;
 
+        // Collapse y to 0.0 for clean 2D wavefield alignment
+        entry.y = 0.0;
+
         entry.z = round_to(entry.z - z_max);
         entry.elevation = round_to(entry.elevation - z_max);
 

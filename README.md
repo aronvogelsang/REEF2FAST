@@ -63,7 +63,7 @@ The program will:
 1. Parse control parameters
 2. Interpolate REEF3D wavefield data onto the OpenFAST SeaState grid
 3. Compute velocity, acceleration, and surface elevation
-4. Export OpenFAST-compatible `.Vxi`, `.Azi`, `.DynP`, `.Elev` files
+4. Export OpenFAST-compatible `.Vi`, `.Ai`, `.DynP`, `.Elev` files
 5. Optionally write a CSV file (`interpolated_wavefield.csv`) for diagnostics
 
 ---
@@ -86,6 +86,6 @@ All output files will be placed in the `output/` directory:
 - **OpenFAST:** v4.0.2 (tested)  
 - **REEF3D:** v25.02 (tested)  
 - **Supported Solver:** REEF3D::NHFLOW  
-  *(Other solvers may work if the CSV header matches the required format: `timestep,u,v,w,eta,pressure,x,y,z`)*
+  *(Other solvers may work if the CSV header matches the required format: `"TimeStep","velocity:0","velocity:1","velocity:2","pressure","elevation","Points:0","Points:1","Points:2"`)*
 
 ---

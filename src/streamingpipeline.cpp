@@ -40,8 +40,12 @@ StreamingPipeline::StreamingPipeline(const std::string& wavefield_file,
 
 void StreamingPipeline::run() {
     // Generate target interpolation grid
+    if (is2D) {
+    generate_seastate_grid_targets_2d(control_file, target_grid);
+    }else {
     generate_seastate_grid_targets(control_file, target_grid);
-
+    }
+    
     // Read grid bounds
     if (!read_control_file(control_file, X_MIN, X_MAX, Y_MIN, Y_MAX, Z_MIN, Z_MAX, NX, NY, NZ)) {
         throw std::runtime_error("Failed to read control.txt");
@@ -110,11 +114,15 @@ void StreamingPipeline::process_timestep(int timestep,
 
     std::cout << "\nTimestep: " << timestep << "\n";
 
+
+    std::cout << "Target grid size: " << target_grid.size() << "\n";
+    std::cout << "Curr wavefield size: " << curr.size() << "\n";
+    std::cout << "Interpolating field: vx...\n";
     // Interpolation
     std::vector<double> vx, vy, vz, p;
     if (is2D) {
         vx = interpolate_to_grid_2d(curr, target_grid, "vx", 4);
-        vy = std::vector<double>(target_grid.size(), 0.0);  // 2D → vy = 0
+        vy = std::vector<double>(target_grid.size(), 0.0);  // 2D: vy = 0
         vz = interpolate_to_grid_2d(curr, target_grid, "vz", 4);
         p  = interpolate_to_grid_2d(curr, target_grid, "pressure", 4);
     } else {

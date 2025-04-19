@@ -69,6 +69,11 @@ std::vector<double> interpolate_to_grid_2d(const Wavefield& wf,
         else if (field == "pressure") values.push_back(e.pressure);
     }
 
+    if (cloud.pts.size() != values.size()) {
+        std::cerr << "[interpolate_to_grid_2d] Mismatch between pts and values: "
+                  << cloud.pts.size() << " vs " << values.size() << "\n";
+    }
+
     KDTree2D tree(2, cloud, nanoflann::KDTreeSingleIndexAdaptorParams(10));
     tree.buildIndex();
 
