@@ -1,0 +1,6 @@
+/output/
+/build/
+/benchmark/
+.DS_Store
+*~
+.vscode/
