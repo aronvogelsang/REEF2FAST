@@ -20,14 +20,14 @@ void report_diagnostics_3d(const Wavefield& wf, int timestep) {
         max_eta = std::max(max_eta, std::abs(e.elevation));
     }
 
-    std::cout << "  Max |u|:  " << max_vx << "\n";
-    std::cout << "  Max |v|:  " << max_vy << "\n";
-    std::cout << "  Max |w|:  " << max_vz << "\n";
-    std::cout << "  Max |ax|: " << max_ax << "\n";
-    std::cout << "  Max |ay|: " << max_ay << "\n";
-    std::cout << "  Max |az|: " << max_az << "\n";
-    std::cout << "  Max |p|:  " << max_p << "\n";
-    std::cout << "  Max |eta|:    " << max_eta << "\n";
+    std::cout << "  Max |u|:    " << max_vx << "\n";
+    std::cout << "  Max |v|:    " << max_vy << "\n";
+    std::cout << "  Max |w|:    " << max_vz << "\n";
+    std::cout << "  Max |ax|:   " << max_ax << "\n";
+    std::cout << "  Max |ay|:   " << max_ay << "\n";
+    std::cout << "  Max |az|:   " << max_az << "\n";
+    std::cout << "  Max |p|:    " << max_p << "\n";
+    std::cout << "  Max |eta|:  " << max_eta << "\n";
 }
 
 void report_diagnostics_2d(const Wavefield& wf, int timestep) {
@@ -44,12 +44,12 @@ void report_diagnostics_2d(const Wavefield& wf, int timestep) {
         max_eta = std::max(max_eta, std::abs(e.elevation));
     }
 
-    std::cout << "  Max |u|:  " << max_vx << "\n";
-    std::cout << "  Max |w|:  " << max_vz << "\n";
-    std::cout << "  Max |ax|: " << max_ax << "\n";
-    std::cout << "  Max |az|: " << max_az << "\n";
-    std::cout << "  Max |p|:  " << max_p << "\n";
-    std::cout << "  Max |eta|:    " << max_eta << "\n";
+    std::cout << "  Max |u|:    " << max_vx << "\n";
+    std::cout << "  Max |w|:    " << max_vz << "\n";
+    std::cout << "  Max |ax|:   " << max_ax << "\n";
+    std::cout << "  Max |az|:   " << max_az << "\n";
+    std::cout << "  Max |p|:    " << max_p << "\n";
+    std::cout << "  Max |eta|:  " << max_eta << "\n";
 }
 
 void report_grid_summary_3d(double X_MIN, double X_MAX,

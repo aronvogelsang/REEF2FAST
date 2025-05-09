@@ -113,11 +113,6 @@ void StreamingPipeline::process_timestep(int timestep,
     const std::vector<WavefieldEntry>& next) {
 
     std::cout << "\nTimestep: " << timestep << "\n";
-
-
-    std::cout << "Target grid size: " << target_grid.size() << "\n";
-    std::cout << "Curr wavefield size: " << curr.size() << "\n";
-    std::cout << "Interpolating field: vx...\n";
     // Interpolation
     std::vector<double> vx, vy, vz, p;
     if (is2D) {

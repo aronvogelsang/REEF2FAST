@@ -6,6 +6,7 @@
 #include <vector>
 #include <array>
 #include <utility>
+#include <algorithm>
 
 // 2D key: (x, y)
 using XY = std::pair<double, double>;
@@ -32,22 +33,31 @@ void compute_surface_elevation_from_elev_single_timestep(
     std::vector<WavefieldEntry>& target,
     const std::vector<WavefieldEntry>& raw)
 {
-    std::map<XY, double> max_elev_map;
+    std::map<XY, std::vector<double>> xy_to_elevs;
 
+    // Group elevation values by (x, y) coordinate
     for (const auto& entry : raw) {
         XY key = {round_to(entry.x), round_to(entry.y)};
-        max_elev_map[key] = std::max(max_elev_map[key], entry.elevation);
+        xy_to_elevs[key].push_back(entry.elevation);
     }
 
+    // Compute maximum per column
     XYCloud cloud;
-    for (const auto& [xy, val] : max_elev_map) {
-        cloud.pts.push_back(xy);
-        cloud.values.push_back(val);
+    cloud.pts.reserve(xy_to_elevs.size());
+    cloud.values.reserve(xy_to_elevs.size());
+
+    for (const auto& [xy, vec] : xy_to_elevs) {
+        if (!vec.empty()) {
+            double max_eta = *std::max_element(vec.begin(), vec.end());
+            cloud.pts.push_back(xy);
+            cloud.values.push_back(max_eta);
+        }
     }
 
     KDTree2D tree(2, cloud, nanoflann::KDTreeSingleIndexAdaptorParams(10));
     tree.buildIndex();
 
+    // Interpolate to SeaState target grid
     for (auto& e : target) {
         double query[2] = {e.x, e.y};
         std::vector<size_t> indices(4);

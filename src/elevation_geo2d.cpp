@@ -24,29 +24,32 @@ using KDTree1D = nanoflann::KDTreeSingleIndexAdaptor<
 
 void compute_surface_elevation_geo_2d_single_timestep(std::vector<WavefieldEntry>& target,
                                                       const std::vector<WavefieldEntry>& raw) {
-    std::map<double, double> max_z_map;
+    std::map<double, std::vector<double>> x_to_zvals;
 
-    // Find max z at each x (y is constant in 2D case)
+    // Group z-values for each x-coordinate (y is constant in 2D case)
     for (const auto& e : raw) {
         double x = round_to(e.x);
-        if (max_z_map.find(x) == max_z_map.end()) {
-            max_z_map[x] = e.z;
-        } else {
-            max_z_map[x] = std::max(max_z_map[x], e.z);
+        x_to_zvals[x].push_back(e.z);
+    }
+
+    // Compute maximum z per vertical column
+    XCloud cloud;
+    cloud.pts.reserve(x_to_zvals.size());
+    cloud.values.reserve(x_to_zvals.size());
+
+    for (const auto& [x, vec] : x_to_zvals) {
+        if (!vec.empty()) {
+            double max_z = *std::max_element(vec.begin(), vec.end());
+            cloud.pts.push_back(x);
+            cloud.values.push_back(max_z);
         }
     }
 
-    // Build KDTree
-    XCloud cloud;
-    for (const auto& [x, val] : max_z_map) {
-        cloud.pts.push_back(x);
-        cloud.values.push_back(val);
-    }
-
+    // Build KDTree for interpolation
     KDTree1D tree(1, cloud, nanoflann::KDTreeSingleIndexAdaptorParams(10));
     tree.buildIndex();
 
-    // Interpolate z-surface to target grid
+    // Interpolate to SeaState grid
     for (auto& pt : target) {
         double query[1] = {pt.x};
 

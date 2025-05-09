@@ -70,7 +70,7 @@ The program will:
 
 ## Output Files
 
-All output files will be placed in the `output/` directory:
+All output files will be placed in the `output/` (will be created in runtime) directory:
 
 - `REEF2FAST.Vxi`, `.Vyi`, `.Vzi` – velocity components  
 - `REEF2FAST.Axi`, `.Ayi`, `.Azi` – acceleration components  
@@ -87,5 +87,19 @@ All output files will be placed in the `output/` directory:
 - **REEF3D:** v25.02 (tested)  
 - **Supported Solver:** REEF3D::NHFLOW  
   *(Other solvers may work if the CSV header matches the required format: `"TimeStep","velocity:0","velocity:1","velocity:2","pressure","elevation","Points:0","Points:1","Points:2"`)*
+
+---
+
+## More Information
+
+- For a detailed description of REEF3D and its implemented modules, including the module NHFLOW used in this project, visit the [REEF3D website](https://www.reef3d.com/).  
+  The source code is available at [REEF3D GitHub](https://github.com/REEF3D).
+- For a detailed description of OpenFAST, visit the [OpenFAST website](https://openfast.readthedocs.io/en/main/index.html).  
+  The source code is available at [OpenFAST GitHub](https://github.com/OpenFAST).  
+  Additionally, a short OpenFAST user guide, specifically written for the REEF2FAST context, is available in the `user_guides/` folder.
+- A comprehensive overview of the theories and methodologies applied in REEF2FAST is provided in my thesis.  
+  For access, please contact: aron.vogelsang@icloud.com.  
+  Furthermore, a dedicated REEF2FAST user guide will be available in the `user_guides/` folder (June 2025). 
+  Information about the validation and verification cases will be found in the `benchmark/` folder (June 2025).
 
 ---

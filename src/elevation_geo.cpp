@@ -30,29 +30,32 @@ using KDTree2D = nanoflann::KDTreeSingleIndexAdaptor<
 
 void compute_surface_elevation_geo_single_timestep(std::vector<WavefieldEntry>& target,
                                                    const std::vector<WavefieldEntry>& raw) {
-    std::map<XY, double> max_z_map;
+    std::map<XY, std::vector<double>> xy_to_zvals;
 
-    // Find max z for each (x, y)
+    // Group z-values for each (x, y) coordinate
     for (const auto& entry : raw) {
         XY key = {round_to(entry.x), round_to(entry.y)};
-        if (max_z_map.find(key) == max_z_map.end()) {
-            max_z_map[key] = entry.z;
-        } else {
-            max_z_map[key] = std::max(max_z_map[key], entry.z);
+        xy_to_zvals[key].push_back(entry.z);
+    }
+
+    // Compute the maximum z per vertical column
+    XYCloud cloud;
+    cloud.pts.reserve(xy_to_zvals.size());
+    cloud.values.reserve(xy_to_zvals.size());
+
+    for (const auto& [xy, vec] : xy_to_zvals) {
+        if (!vec.empty()) {
+            double max_z = *std::max_element(vec.begin(), vec.end());
+            cloud.pts.push_back(xy);
+            cloud.values.push_back(max_z);
         }
     }
 
     // Build KDTree for interpolation
-    XYCloud cloud;
-    for (const auto& [xy, zval] : max_z_map) {
-        cloud.pts.push_back(xy);
-        cloud.values.push_back(zval);
-    }
-
     KDTree2D tree(2, cloud, nanoflann::KDTreeSingleIndexAdaptorParams(10));
     tree.buildIndex();
 
-    // Interpolate onto SeaState target points
+    // Interpolate to SeaState grid points
     for (auto& pt : target) {
         double query[2] = {pt.x, pt.y};
 

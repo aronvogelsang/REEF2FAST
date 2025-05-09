@@ -1,7 +1,7 @@
 #include "elevation_elev2d.hpp"
 #include "common.hpp"
 #include "../external/nanoflann.hpp"
-#include <map>
+#include <unordered_map>
 #include <cmath>
 #include <vector>
 #include <algorithm>
@@ -26,17 +26,25 @@ void compute_surface_elevation_from_elev_2d_single_timestep(
     std::vector<WavefieldEntry>& target,
     const std::vector<WavefieldEntry>& raw)
 {
-    std::map<double, double> max_elev_map;
+    std::unordered_map<double, std::vector<double>> x_to_elevs;
 
+    // Group x-values
     for (const auto& e : raw) {
         double x = round_to(e.x);
-        max_elev_map[x] = std::max(max_elev_map[x], e.elevation);
+        x_to_elevs[x].push_back(e.elevation);
     }
 
+    // Max per x
     XCloud cloud;
-    for (const auto& [x, val] : max_elev_map) {
-        cloud.pts.push_back(x);
-        cloud.values.push_back(val);
+    cloud.pts.reserve(x_to_elevs.size());
+    cloud.values.reserve(x_to_elevs.size());
+
+    for (const auto& [x, vec] : x_to_elevs) {
+        if (!vec.empty()) {
+            double max_eta = *std::max_element(vec.begin(), vec.end());
+            cloud.pts.push_back(x);
+            cloud.values.push_back(max_eta);
+        }
     }
 
     KDTree1D tree(1, cloud, nanoflann::KDTreeSingleIndexAdaptorParams(10));
