@@ -74,7 +74,7 @@ void generate_seastate(double X_MIN, double X_MAX, double Y_MIN, double Y_MAX, d
     outfile << "        " << NZ << "  NZ             - Number of nodes in the Z direction (-) [>=2]\n";
     outfile << "---------------------- WAVES ---------------------------------------------------\n";
     outfile << "        6   WaveMod        - Incident wave kinematics model {0: none=still water, 1: regular (periodic), 1P#: regular with user-specified phase, 2: JONSWAP/Pierson-Moskowitz spectrum (irregular), 3: White noise spectrum (irregular), 4: user-defined spectrum from routine UserWaveSpctrm (irregular), 5: Externally generated wave-elevation time series, 6: Externally generated full wave-kinematics time series, 7: wave frequency components [option 6 is invalid for PotMod/=0]} (switch)\n";
-    outfile << "        3   WaveStMod      - Model for stretching incident wave kinematics to instantaneous free surface {0: none=no stretching, 1: vertical stretching, 2: extrapolation stretching, 3: Wheeler stretching} (switch) [unused when WaveMod=0 or when PotMod/=0]\n";
+    outfile << "        0   WaveStMod      - Model for stretching incident wave kinematics to instantaneous free surface {0: none=no stretching, 1: vertical stretching, 2: extrapolation stretching, 3: Wheeler stretching} (switch) [unused when WaveMod=0 or when PotMod/=0]\n";
     outfile << "        " << sim_time << "   WaveTMax      - Analysis time for incident wave calculations (sec)\n";
     outfile << "        " << wave_dt << "   WaveDT         - Time step for incident wave calculations (sec)\n";
     outfile << "        " << wave_hs << "   WaveHs         - Significant wave height (meters)\n";

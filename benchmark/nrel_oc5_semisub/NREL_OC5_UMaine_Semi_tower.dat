@@ -1,0 +1,59 @@
+---------------------- FAST TOWER FILE -----------------------------------------
+DeepCwind Model Wind Turbine tower input properties.  V4 mode shapes  !!!!!!!PRELIMINARY TEST VERSION!!!!!!!
+---------------------- TOWER PARAMETERS ----------------------------------------
+  18        NTwInpSt    - Number of input stations to specify tower geometry
+   0.1      TwrFADmp(1) - Tower 1st fore-aft mode structural damping ratio (%)
+   0.1      TwrFADmp(2) - Tower 2nd fore-aft mode structural damping ratio (%)
+   0.1      TwrSSDmp(1) - Tower 1st side-to-side mode structural damping ratio (%)
+   0.1      TwrSSDmp(2) - Tower 2nd side-to-side mode structural damping ratio (%)
+---------------------- TOWER ADJUSTMUNT FACTORS --------------------------------
+0.8875      FAStTunr(1) - Tower fore-aft modal stiffness tuner, 1st mode (-)
+0.8875      FAStTunr(2) - Tower fore-aft modal stiffness tuner, 2nd mode (-)
+0.9031      SSStTunr(1) - Tower side-to-side stiffness tuner, 1st mode (-)
+0.9031      SSStTunr(2) - Tower side-to-side stiffness tuner, 2nd mode (-)
+1.10183     AdjTwMa     - Factor to adjust tower mass density (-)
+   1.0      AdjFASt     - Factor to adjust tower fore-aft stiffness (-)
+   1.0      AdjSSSt     - Factor to adjust tower side-to-side stiffness (-)
+---------------------- DISTRIBUTED TOWER PROPERTIES ----------------------------
+HtFract  TMassDen  TwFAStif   TwSSStif   TwGJStif   TwEAStif   TwFAIner  TwSSIner  TwFAcgOf  TwSScgOf
+(-)      (kg/m)    (Nm^2)     (Nm^2)     (Nm^2)     (N)        (kg m)    (kg m)    (m)       (m)
+0.00000	1.029923E+05	8.872E+11	8.872E+11	6.753E+11	3.044E+12	0	0	0	0
+0.00399	1.029923E+05	8.872E+11	8.872E+11	6.753E+11	3.044E+12	0	0	0	0
+0.00401	8.508150E+03	8.872E+11	8.872E+11	6.753E+11	3.044E+12	0	0	0	0
+0.10999	8.508150E+03	8.872E+11	8.872E+11	6.753E+11	3.044E+12	0	0	0	0
+0.11001	1.074499E+04	1.083E+12	1.083E+12	8.248E+11	4.220E+12	0	0	0	0
+0.14899	1.074499E+04	1.083E+12	1.083E+12	8.248E+11	4.220E+12	0	0	0	0
+0.14901	2.968196E+04	1.083E+12	1.083E+12	8.248E+11	4.220E+12	0	0	0	0
+0.15799	2.968196E+04	1.083E+12	1.083E+12	8.248E+11	4.220E+12	0	0	0	0
+0.15801	2.982900E+03	1.963E+11	1.963E+11	1.495E+11	1.176E+12	0	0	0	0
+0.92299	2.982900E+03	1.963E+11	1.963E+11	1.495E+11	1.176E+12	0	0	0	0
+0.92301	5.128500E+03	1.963E+11	1.963E+11	1.495E+11	1.176E+12	0	0	0	0
+0.93899	5.128500E+03	1.963E+11	1.963E+11	1.495E+11	1.176E+12	0	0	0	0
+0.93901	5.910700E+03	1.963E+11	1.963E+11	1.495E+11	1.176E+12	0	0	0	0
+0.94699	5.910700E+03	1.963E+11	1.963E+11	1.495E+11	1.176E+12	0	0	0	0
+0.94701	5.216850E+03	1.963E+11	1.963E+11	1.495E+11	1.176E+12	0	0	0	0
+0.95899	5.216850E+03	1.963E+11	1.963E+11	1.495E+11	1.176E+12	0	0	0	0
+0.95901	5.710800E+03	8.722E+11	8.722E+11	6.639E+11	3.845E+12	0	0	0	0
+1.00000	5.710800E+03	8.722E+11	8.722E+11	6.639E+11	3.845E+12	0	0	0	0
+------------------------- TOWER FORE-AFT MODE SHAPES ------- Mode shapes for fixed base, generated from DeepCwind finite element code.
+-0.2425		  TwFAM1Sh(2) - Mode 1, coefficient of x^2 term
+4.6183	 TwFAM1Sh(3) - Mode 1, coefficient of x^3 term
+-6.1577		 TwFAM1Sh(4) - Mode 1, coefficient of x^4 term
+3.6087	 TwFAM1Sh(5) - Mode 1, coefficient of x^5 term
+-0.8267		   TwFAM1Sh(6) - Mode 1, coefficient of x^6 term
+-0.7734	  TwFAM2Sh(2) - Mode 2, coefficient of x^2 term
+37.1053	   TwFAM2Sh(3) - Mode 2, coefficient of x^3 term
+-68.1259   TwFAM2Sh(4) - Mode 2, coefficient of x^4 term
+42.8564	  TwFAM2Sh(5) - Mode 2, coefficient of x^5 term
+-10.0624   TwFAM2Sh(6) - Mode 2, coefficient of x^6 term
+------------------------ TOWER SIDE-TO-SIDE MODE SHAPES -
+-0.2490			 TwSSM1Sh(2) - Mode 1, coefficient of x^2 term
+4.6261	 TwSSM1Sh(3) - Mode 1, coefficient of x^3 term
+-6.1699			  TwSSM1Sh(4) - Mode 1, coefficient of x^4 term
+3.6278	 TwSSM1Sh(5) - Mode 1, coefficient of x^5 term
+-0.8350		 		TwSSM1Sh(6) - Mode 1, coefficient of x^6 term
+-0.7413	TwSSM2Sh(2) - Mode 2, coefficient of x^2 term
+34.6897	 TwSSM2Sh(3) - Mode 2, coefficient of x^3 term
+-63.3986 TwSSM2Sh(4) - Mode 2, coefficient of x^4 term
+39.7835	 TwSSM2Sh(5) - Mode 2, coefficient of x^5 term
+-9.3333	  TwSSM2Sh(6) - Mode 2, coefficient of x^6 term

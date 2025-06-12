@@ -1,0 +1,51 @@
+Round root section with a Cd of 0.50
+Created by the University of Maine, 8/26/13.
+   1        Number of airfoil tables in this file
+   9.9e9    Table ID parameter
+   0.0       No longer used, enter zero (REMOVE THIS LINE FOR WT_Perf!)
+   0.0       No longer used, enter zero (REMOVE THIS LINE FOR WT_Perf!)
+   0.0       No longer used, enter zero (REMOVE THIS LINE FOR WT_Perf!)
+   0.0      Stall angle (deg)
+   0.0      Zero Cn angle of attack (deg)
+   0.0      Cn slope for zero lift (dimensionless)
+   0.0      Cn extrapolated to value at positive stall angle of attack
+   0.0      Cn at stall value for negative angle of attack
+   0.0      Angle of attack for minimum CD (deg)
+   0.50     Minimum CD value
+-180	0	0.5	
+-170	0	0.5	
+-160	0	0.5	
+-150	0	0.5	
+-140	0	0.5	
+-130	0	0.5	
+-120	0	0.5	
+-110	0	0.5	
+-100	0	0.5	
+-90	0	0.5	
+-80	0	0.5	
+-70	0	0.5	
+-60	0	0.5	
+-50	0	0.5	
+-40	0	0.5	
+-30	0	0.5	
+-20	0	0.5	
+-10	0	0.5	
+0	0	0.5	
+10	0	0.5	
+20	0	0.5	
+30	0	0.5	
+40	0	0.5	
+50	0	0.5	
+60	0	0.5	
+70	0	0.5	
+80	0	0.5	
+90	0	0.5	
+100	0	0.5	
+110	0	0.5	
+120	0	0.5	
+130	0	0.5	
+140	0	0.5	
+150	0	0.5	
+160	0	0.5	
+170	0	0.5	
+180	0	0.5

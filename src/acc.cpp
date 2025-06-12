@@ -1,6 +1,8 @@
 #include "acc.hpp"
 #include "structs.hpp"
 #include <cmath>
+// fpr debudding can be deleted later
+#include <iostream>
 
 void computeAcceleration_from_context(
     const std::vector<WavefieldEntry>& prev,
@@ -8,6 +10,10 @@ void computeAcceleration_from_context(
     const std::vector<WavefieldEntry>& next,
     double delta_t)
 {
+    std::cout << "prev size: " << prev.size() 
+              << ", curr size: " << curr.size() 
+              << ", next size: " << next.size() << std::endl;
+
     const size_t n = curr.size();
 
     for (size_t i = 0; i < n; ++i) {

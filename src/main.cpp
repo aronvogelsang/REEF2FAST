@@ -73,6 +73,15 @@ int main() {
         return 1;
     }
 
+    // Ask user whether to apply Wheeler stretching
+    bool use_wheeler = false;
+    std::string wheeler_answer;
+    std::cout << "Apply Wheeler stretching to project wavefield data from the wave crest into OpenFAST domain? (y/n): ";
+    std::cin >> wheeler_answer;
+    if (!wheeler_answer.empty() && (wheeler_answer[0] == 'y' || wheeler_answer[0] == 'Y')) {
+        use_wheeler = true;
+    }
+
     // Ask user whether to write CSV export
     bool write_csv = false;
     std::string csv_answer;
@@ -119,7 +128,8 @@ int main() {
             elevation_mode,
             write_csv,
             y_total,
-            ny_usr
+            ny_usr,
+            use_wheeler
         );
 
         pipeline.run();

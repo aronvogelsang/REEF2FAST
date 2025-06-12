@@ -42,7 +42,8 @@ void stream_wavefield_with_context(
            >> entry.x >> comma
            >> entry.y >> comma
            >> entry.z;
-
+           
+        // Convert from REEF3D vertical system to OpenFAST convention (z=0 at SWL, negative downward)
         entry.z = round_to(entry.z - z_max);
         entry.elevation = round_to(entry.elevation - z_max);
 

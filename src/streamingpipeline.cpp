@@ -16,7 +16,10 @@
 #include "inflate2d.hpp"
 #include "genSeaState.hpp"
 #include "report_diagnostics.hpp"
+#include "wheeler.hpp"
 #include <iostream>
+
+// The brain of the programme. The timestep-streaming architecture.
 
 StreamingPipeline::StreamingPipeline(const std::string& wavefield_file,
                                      const std::string& control_file,
@@ -25,7 +28,8 @@ StreamingPipeline::StreamingPipeline(const std::string& wavefield_file,
                                      const std::string& elevation_mode,
                                      bool write_csv,
                                      double y_total,
-                                     int ny_usr)
+                                     int ny_usr,
+                                     bool use_wheeler)
     : wavefield_file(wavefield_file),
       control_file(control_file),
       ctrl_txt(ctrl_txt),
@@ -34,6 +38,7 @@ StreamingPipeline::StreamingPipeline(const std::string& wavefield_file,
       write_csv(write_csv),
       y_total(y_total),
       ny_usr(ny_usr),
+      use_wheeler(use_wheeler),
       grid_reported(false),
       seastate_written(false),
       first_elevation_written(false) {}
@@ -113,72 +118,93 @@ void StreamingPipeline::process_timestep(int timestep,
     const std::vector<WavefieldEntry>& next) {
 
     std::cout << "\nTimestep: " << timestep << "\n";
-    // Interpolation
-    std::vector<double> vx, vy, vz, p;
+
+    // Optional: Wheeler-Stretching nur auf curr
+    std::vector<WavefieldEntry> stretched_curr = curr;
+    if (use_wheeler) {
+        apply_wheeler_stretching(stretched_curr, z_max);
+    }
+
+    // Interpolation: prev, curr, next separat interpolieren
+    Wavefield interp_prev, interp_curr, interp_next;
+
     if (is2D) {
-        vx = interpolate_to_grid_2d(curr, target_grid, "vx", 4);
-        vy = std::vector<double>(target_grid.size(), 0.0);  // 2D: vy = 0
-        vz = interpolate_to_grid_2d(curr, target_grid, "vz", 4);
-        p  = interpolate_to_grid_2d(curr, target_grid, "pressure", 4);
+        auto vx_p = interpolate_to_grid_2d(prev, target_grid, "vx", 4);
+        auto vz_p = interpolate_to_grid_2d(prev, target_grid, "vz", 4);
+        auto p_p  = interpolate_to_grid_2d(prev, target_grid, "pressure", 4);
+
+        auto vx_c = interpolate_to_grid_2d(stretched_curr, target_grid, "vx", 4);
+        auto vz_c = interpolate_to_grid_2d(stretched_curr, target_grid, "vz", 4);
+        auto p_c  = interpolate_to_grid_2d(stretched_curr, target_grid, "pressure", 4);
+
+        auto vx_n = interpolate_to_grid_2d(next, target_grid, "vx", 4);
+        auto vz_n = interpolate_to_grid_2d(next, target_grid, "vz", 4);
+        auto p_n  = interpolate_to_grid_2d(next, target_grid, "pressure", 4);
+
+        for (size_t i = 0; i < target_grid.size(); ++i) {
+            const auto& pt = target_grid[i];
+            interp_prev.push_back({pt[0], pt[1], pt[2], vx_p[i], 0.0, vz_p[i], p_p[i], NAN, NAN, NAN, NAN});
+            interp_curr.push_back({pt[0], pt[1], pt[2], vx_c[i], 0.0, vz_c[i], p_c[i], NAN, NAN, NAN, NAN});
+            interp_next.push_back({pt[0], pt[1], pt[2], vx_n[i], 0.0, vz_n[i], p_n[i], NAN, NAN, NAN, NAN});
+        }
     } else {
-        vx = interpolate_to_grid(curr, target_grid, "vx", 4);
-        vy = interpolate_to_grid(curr, target_grid, "vy", 4);
-        vz = interpolate_to_grid(curr, target_grid, "vz", 4);
-        p  = interpolate_to_grid(curr, target_grid, "pressure", 4);
+        auto vx_p = interpolate_to_grid(prev, target_grid, "vx", 4);
+        auto vy_p = interpolate_to_grid(prev, target_grid, "vy", 4);
+        auto vz_p = interpolate_to_grid(prev, target_grid, "vz", 4);
+        auto p_p  = interpolate_to_grid(prev, target_grid, "pressure", 4);
+
+        auto vx_c = interpolate_to_grid(stretched_curr, target_grid, "vx", 4);
+        auto vy_c = interpolate_to_grid(stretched_curr, target_grid, "vy", 4);
+        auto vz_c = interpolate_to_grid(stretched_curr, target_grid, "vz", 4);
+        auto p_c  = interpolate_to_grid(stretched_curr, target_grid, "pressure", 4);
+
+        auto vx_n = interpolate_to_grid(next, target_grid, "vx", 4);
+        auto vy_n = interpolate_to_grid(next, target_grid, "vy", 4);
+        auto vz_n = interpolate_to_grid(next, target_grid, "vz", 4);
+        auto p_n  = interpolate_to_grid(next, target_grid, "pressure", 4);
+
+        for (size_t i = 0; i < target_grid.size(); ++i) {
+            const auto& pt = target_grid[i];
+            interp_prev.push_back({pt[0], pt[1], pt[2], vx_p[i], vy_p[i], vz_p[i], p_p[i], NAN, NAN, NAN, NAN});
+            interp_curr.push_back({pt[0], pt[1], pt[2], vx_c[i], vy_c[i], vz_c[i], p_c[i], NAN, NAN, NAN, NAN});
+            interp_next.push_back({pt[0], pt[1], pt[2], vx_n[i], vy_n[i], vz_n[i], p_n[i], NAN, NAN, NAN, NAN});
+        }
     }
 
-    // Build interpolated wavefield
-    Wavefield interpolated;
-    for (size_t i = 0; i < target_grid.size(); ++i) {
-        const auto& pt = target_grid[i];
-        interpolated.push_back(WavefieldEntry{
-            pt[0], pt[1], pt[2],
-            vx[i], vy[i], vz[i],
-            p[i], NAN, NAN, NAN, NAN
-        });
-    }
-
-    // Elevation & Acceleration
+    // Elevation only on curr (unstretched)
     if (is2D) {
         if (elevation_mode == "z") {
-            compute_surface_elevation_geo_2d_single_timestep(interpolated, curr);
+            compute_surface_elevation_geo_2d_single_timestep(interp_curr, curr);
         } else {
-            compute_surface_elevation_from_elev_2d_single_timestep(interpolated, curr);
+            compute_surface_elevation_from_elev_2d_single_timestep(interp_curr, curr);
         }
-        computeAcceleration2D_from_context(prev, interpolated, next, wave_dt);
+        computeAcceleration2D_from_context(interp_prev, interp_curr, interp_next, wave_dt);
     } else {
         if (elevation_mode == "z") {
-            compute_surface_elevation_geo_single_timestep(interpolated, curr);
+            compute_surface_elevation_geo_single_timestep(interp_curr, curr);
         } else {
-            compute_surface_elevation_from_elev_single_timestep(interpolated, curr);
+            compute_surface_elevation_from_elev_single_timestep(interp_curr, curr);
         }
-        computeAcceleration_from_context(prev, interpolated, next, wave_dt);
+        computeAcceleration_from_context(interp_prev, interp_curr, interp_next, wave_dt);
     }
 
-    // Optional console diagnostics
-    if (is2D) {
-        report_diagnostics_2d(interpolated, timestep);
-    } else {
-        report_diagnostics_3d(interpolated, timestep);
-    }
+    // Diagnostics
+    if (is2D) report_diagnostics_2d(interp_curr, timestep);
+    else      report_diagnostics_3d(interp_curr, timestep);
 
-    // Inflate for 2D case
-    if (is2D) {
-        inflate_wavefield_y(interpolated, y_total, ny_usr);
-    }
+    // Inflate 2D
+    if (is2D) inflate_wavefield_y(interp_curr, y_total, ny_usr);
 
-    // Export timestep to .XXX files
+    // Export
     bool append_wavefiles = (timestep > 0);
-    generate_all_wavefiles(interpolated, wave_dt, timestep, append_wavefiles);
+    generate_all_wavefiles(interp_curr, wave_dt, timestep, append_wavefiles);
 
-    // Export surface elevation streamingly
     bool append_elev = first_elevation_written;
-    write_surface_elevation(interpolated, "REEF2FAST.Elev", wave_dt, timestep, append_elev);
+    write_surface_elevation(interp_curr, "REEF2FAST.Elev", wave_dt, timestep, append_elev);
     first_elevation_written = true;
 
-    // Optional CSV
     if (write_csv) {
         bool append = (timestep > 0);
-        write_out_csv(interpolated, "../output/interpolated_wavefield.csv", timestep, append);
+        write_out_csv(interp_curr, "../output/interpolated_wavefield.csv", timestep, append);
     }
 }

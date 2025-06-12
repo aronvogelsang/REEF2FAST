@@ -1,0 +1,38 @@
+MARIN Stock Wind Turbine for Use in Offshore Analysis of VolturnUS.
+HEADER 2
+"BEDDOES"     StallMod     - Dynamic stall included [BEDDOES or STEADY] (unquoted string)
+"NO_CM"      UseCm        - Use aerodynamic pitching moment model? [USE_CM or NO_CM] (unquoted string)
+"EQUIL"       InfModel     - Inflow model [DYNIN or EQUIL] (unquoted string)
+"SWIRL"       IndModel     - Induction-factor model [NONE or WAKE or SWIRL] (unquoted string)
+      0.005   AToler       - Induction-factor tolerance (convergence criteria) (-)
+"PRANDtl"     TLModel      - Tip-loss model (EQUIL only) [PRANDtl, GTECH, or NONE] (unquoted string)
+"PRANDtl"     HLModel      - Hub-loss model (EQUIL only) [PRANdtl or NONE] (unquoted string)
+0    TwrShad        - INSTEAD OF:   0.0      TwrShad     - Tower-shadow velocity deficit (-)
+9999.9         TwrPotent      - Calculate tower potential flow (flag)  INSTEAD OF  9999.9      ShadHWid    - Tower-shadow half width (m)
+9999.9        TwrShadow      - Calculate tower shadow (flag)          INSTEAD OF  9999.9      T_Shad_Refpt- Tower-shadow reference point (m)
+1.225 False         CalcTwrAero    - Calculate aerodynamic drag of the tower at the ElastoDyn nodes.  TwrPotent must be true.
+  1.464E-05   KinVisc      - Kinematic air viscosity [CURRENTLY IGNORED] (m^2/sec)
+"default"     DTAero       - Time interval for aerodynamic calculations (sec)
+          2   NumFoil      - Number of airfoil files (-)
+"AeroData/Cylinder.dat"                         FoilNm      - Names of the airfoil files [NumFoil lines] (quoted strings)
+"AeroData/AG04_mod.dat"
+  17        BldNodes    - Number of blade nodes used for analysis (-)
+RNodes   AeroTwst  DRNodes  Chord  NFoil  PrnElm
+2.8667	42.841	2.7333	4.401	1	NOPRINT
+5.6	31.217	2.7333	5.227	1	NOPRINT
+8.3333	23.075	2.7333	5.582	2	NOPRINT
+11.75	16.449	4.1	5.792	2	NOPRINT
+15.85	11.506	4.1	5.796	2	NOPRINT
+19.95	8.517	4.1	5.577	2	NOPRINT
+24.05	6.531	4.1	5.298	2	NOPRINT
+28.15	5.056	4.1	5.007	2	NOPRINT
+32.25	3.880	4.1	4.707	2	NOPRINT
+36.35	2.939	4.1	4.392	2	NOPRINT
+40.45	2.215	4.1	4.078	2	NOPRINT
+44.55	1.672	4.1	3.775	2	NOPRINT
+48.65	1.244	4.1	3.479	2	NOPRINT
+52.75	0.842	4.1	3.189	2	NOPRINT
+56.1667	0.500	2.7333	2.916	2	NOPRINT
+58.9	0.236	2.7333	2.651	2	NOPRINT
+61.6333	0.063	2.7333	1.724	2	NOPRINT
+

@@ -1,0 +1,220 @@
+------- ELASTODYN V1.01.* INPUT FILE -------------------------------------------
+UMaine semi-submersible platform with MARIN Stock Turbine. Model developed at NREL for IEA Wind Research Task 30, OC5 Phase II  !!!!!!!PRELIMINARY TEST VERSION!!!!!!!
+---------------------- SIMULATION CONTROL --------------------------------------
+False         Echo        - Echo input data to "<RootName>.ech" (flag)
+   3          Method      - Integration method: {1: RK4, 2: AB4, or 3: ABM4} (-)
+     default   DT          - Integration time step (s)
+---------------------- ENVIRONMENTAL CONDITION ---------------------------------
+    9.80665   Gravity     - Gravitational acceleration (m/s^2)
+---------------------- DEGREES OF FREEDOM --------------------------------------
+F       FlapDOF1    - First flapwise blade mode DOF (flag)
+F       FlapDOF2    - Second flapwise blade mode DOF (flag)
+F       EdgeDOF     - First edgewise blade mode DOF (flag)
+F         TeetDOF     - Rotor-teeter DOF (flag) [unused for 3 blades]
+F         DrTrDOF     - Drivetrain rotational-flexibility DOF (flag)
+F       GenDOF      - Generator DOF (flag)
+F         YawDOF      - Yaw DOF (flag)
+T          TwFADOF1    - First fore-aft tower bending-mode DOF (flag)
+F          TwFADOF2    - Second fore-aft tower bending-mode DOF (flag)
+T          TwSSDOF1    - First side-to-side tower bending-mode DOF (flag)
+F          TwSSDOF2    - Second side-to-side tower bending-mode DOF (flag)
+T     PtfmSgDOF   - Platform horizontal surge translation DOF (flag)
+T     PtfmSwDOF   - Platform horizontal sway translation DOF (flag)
+T   PtfmHvDOF   - Platform vertical heave translation DOF (flag)
+T     PtfmRDOF    - Platform roll tilt rotation DOF (flag)
+T     PtfmPDOF    - Platform pitch tilt rotation DOF (flag)
+T      PtfmYDOF    - Platform yaw rotation DOF (flag)
+---------------------- INITIAL CONDITIONS --------------------------------------
+          0   OoPDefl     - Initial out-of-plane blade-tip displacement (meters)
+          0   IPDefl      - Initial in-plane blade-tip deflection (meters)
+       -1.0   BlPitch(1)  - Blade 1 initial pitch (degrees)
+       1.0   BlPitch(2)  - Blade 2 initial pitch (degrees)
+       +3.0   BlPitch(3)  - Blade 3 initial pitch (degrees) [unused for 2 blades]
+          0   TeetDefl    - Initial or fixed teeter angle (degrees) [unused for 3 blades]
+          0   Azimuth     - Initial azimuth angle for blade 1 (degrees)
+       12.1   RotSpeed    - Initial or fixed rotor speed (rpm)
+          0   NacYaw      - Initial or fixed nacelle-yaw angle (degrees)
+        0   TTDspFA     - Initial fore-aft tower-top displacement (meters)
+0   TTDspSS     - Initial side-to-side tower-top displacement (meters)
+0 1.78    PtfmSurge   - Initial or fixed horizontal surge translational displacement of platform (meters)
+1.39E-1 PtfmSway    - Initial or fixed horizontal sway translational displacement of platform (meters)
+2.4E-3   PtfmHeave   - Initial or fixed vertical heave translational displacement of platform (meters)
+8.7E-4  PtfmRoll    - Initial or fixed roll tilt rotational displacement of platform (degrees)
+-3E-2   PtfmPitch   - Initial or fixed pitch tilt rotational displacement of platform (degrees)
+5.5E-6   PtfmYaw     - Initial or fixed yaw rotational displacement of platform (degrees)
+---------------------- TURBINE CONFIGURATION -----------------------------------
+          3   NumBl       - Number of blades (-)
+         63   TipRad      - The distance from the rotor apex to the blade tip (meters)
+        1.5   HubRad      - The distance from the rotor apex to the blade root (meters)
+          0   PreCone(1)  - Blade 1 cone angle (degrees)
+          0   PreCone(2)  - Blade 2 cone angle (degrees)
+          0   PreCone(3)  - Blade 3 cone angle (degrees) [unused for 2 blades]
+          0   HubCM       - Distance from rotor apex to hub mass [positive downwind] (meters)
+          0   UndSling    - Undersling length [distance from teeter pin to the rotor apex] (meters) [unused for 3 blades]
+          0   Delta3      - Delta-3 angle for teetering rotors (degrees) [unused for 3 blades]
+          0   AzimB1Up    - Azimuth value to use for I/O when blade 1 points up (degrees)
+      -10.6   OverHang    - Distance from yaw axis to rotor apex [3 blades] or teeter pin [2 blades] (meters)
+       10.6   ShftGagL    - Distance from rotor apex [3 blades] or teeter pin [2 blades] to shaft strain gages [positive for upwind rotors] (meters)
+          0   ShftTilt    - Rotor shaft tilt angle (degrees)
+1.35        NacCMxn     - Downwind distance from the tower-top to the nacelle CM (meters)
+          0   NacCMyn     - Lateral  distance from the tower-top to the nacelle CM (meters)
+        1.8   NacCMzn     - Vertical distance from the tower-top to the nacelle CM (meters)
+        2.2   NcIMUxn     - Downwind distance from the tower-top to the nacelle IMU (meters)
+          0   NcIMUyn     - Lateral  distance from the tower-top to the nacelle IMU (meters)
+      -6.17   NcIMUzn     - Vertical distance from the tower-top to the nacelle IMU (meters)
+        1.8   Twr2Shft    - Vertical distance from the tower-top to the rotor shaft (meters)
+   88.2   TowerHt     - Height of tower above ground level [onshore] or MSL [offshore] (meters)
+      10.0   TowerBsHt   - Height of tower base above ground level [onshore] or MSL [offshore] (meters)
+          0   PtfmCMxt    - Downwind distance from the ground level [onshore] or MSL [offshore] to the platform CM (meters)
+          0   PtfmCMyt    - Lateral distance from the ground level [onshore] or MSL [offshore] to the platform CM (meters)
+-13.5249647    PtfmCMzt    - Vertical distance from the ground level [onshore] or MSL [offshore] to the platform CM (meters)
+         -0   PtfmRefzt   - Vertical distance from the ground level [onshore] or MSL [offshore] to the platform reference point (meters)
+---------------------- MASS AND INERTIA ----------------------------------------
+          0   TipMass(1)  - Tip-brake mass, blade 1 (kg)
+          0   TipMass(2)  - Tip-brake mass, blade 2 (kg)
+          0   TipMass(3)  - Tip-brake mass, blade 3 (kg) [unused for 2 blades]
+          1   HubMass     - Hub mass (kg)
+          0   HubIner     - Hub inertia about rotor axis [3 blades] or teeter axis [2 blades] (kg m^2)
+          0   GenIner     - Generator inertia about HSS (kg m^2)
+4.779E5        NacMass     - Nacelle mass (kg)
+1223425        NacYIner    - Nacelle inertia about yaw axis (kg m^2)   !FW: Required to run (minimum)...
+          0   YawBrMass   - Yaw bearing mass (kg)
+13170702.55    PtfmMass    - Platform mass (kg)
+ 7.5534E+9   PtfmRIner   - Platform inertia for roll tilt rotation about the platform CM (kg m^2)
+8.2236E+9    PtfmPIner   - Platform inertia for pitch tilt rotation about the platform CM (kg m^2)
+ 1.3612E+10  PtfmYIner   - Platform inertia for yaw rotation about the platform CM (kg m^2)
+---------------------- BLADE ---------------------------------------------------
+  17  BldNodes    - Number of blade nodes (per blade) used for analysis (-)
+"NREL_OC5_UMaine_Blade.dat"    BldFile(1)  - Name of file containing properties for blade 1 (quoted string)
+"NREL_OC5_UMaine_Blade.dat"    BldFile(2)  - Name of file containing properties for blade 2 (quoted string)
+"NREL_OC5_UMaine_Blade.dat"    BldFile(3)  - Name of file containing properties for blade 3 (quoted string) [unused for 2 blades]
+---------------------- ROTOR-TEETER --------------------------------------------
+          0   TeetMod     - Rotor-teeter spring/damper model {0: none, 1: standard, 2: user-defined from routine UserTeet} (switch) [unused for 3 blades]
+          0   TeetDmpP    - Rotor-teeter damper position (degrees) [used only for 2 blades and when TeetMod=1]
+          0   TeetDmp     - Rotor-teeter damping constant (N-m/(rad/s)) [used only for 2 blades and when TeetMod=1]
+          0   TeetCDmp    - Rotor-teeter rate-independent Coulomb-damping moment (N-m) [used only for 2 blades and when TeetMod=1]
+          0   TeetSStP    - Rotor-teeter soft-stop position (degrees) [used only for 2 blades and when TeetMod=1]
+          0   TeetHStP    - Rotor-teeter hard-stop position (degrees) [used only for 2 blades and when TeetMod=1]
+          0   TeetSSSp    - Rotor-teeter soft-stop linear-spring constant (N-m/rad) [used only for 2 blades and when TeetMod=1]
+          0   TeetHSSp    - Rotor-teeter hard-stop linear-spring constant (N-m/rad) [used only for 2 blades and when TeetMod=1]
+---------------------- DRIVETRAIN ----------------------------------------------
+        100   GBoxEff     - Gearbox efficiency (%)
+          1   GBRatio     - Gearbox ratio (-)
+     9999.9   DTTorSpr    - Drivetrain torsional spring (N-m/rad)
+     9999.9   DTTorDmp    - Drivetrain torsional damper (N-m/(rad/s))
+---------------------- FURLING -------------------------------------------------
+False         Furling     - Read in additional model properties for furling turbine (flag) [must currently be FALSE)
+"unused"      FurlFile    - Name of file containing furling properties (quoted string) [unused when Furling=False]
+---------------------- TOWER ---------------------------------------------------
+         21   TwrNodes    - Number of tower nodes used for analysis (-)
+"NREL_OC5_UMaine_Semi_tower.dat"    TwrFile     - Name of file containing tower properties (quoted string)
+---------------------- OUTPUT --------------------------------------------------
+True          SumPrint    - Print summary data to "<RootName>.sum" (flag)
+          1   OutFile     - Switch to determine where output will be placed: {1: in module output file only; 2: in glue code output file only; 3: both} (currently unused)
+True          TabDelim    - Use tab delimiters in text tabular output file? (flag) (currently unused)
+"ES10.3E2"    OutFmt      - Format used for text tabular output (except time).  Resulting field should be 10 characters. (quoted string)  [not checked for validity!] (currently unused)
+          0   TStart      - Time to begin tabular output (s) (currently unused)
+          1   DecFact     - Decimation factor for tabular output {1: output every time step} (-) (currently unused)
+          1   NTwGages    - Number of tower nodes that have strain gages for output [0 to 9] (-)
+          21   TwrGagNd    - List of tower nodes that have strain gages [1 to TwrNodes] (-) [unused if NTwGages=0]
+          1   NBlGages    - Number of blade nodes that have strain gages for output [0 to 9] (-)
+          9   BldGagNd    - List of blade nodes that have strain gages [1 to BldNodes] (-) [unused if NBlGages=0]
+              OutList     - The next line(s) contains a list of output parameters.  See OutListParameters.xlsx for a listing of available output channels, (-)
+BldPitch1                 - Pitch angles for blades 1, 2, and 3
+BldPitch2                 - Pitch angles for blades 1, 2, and 3
+BldPitch3                 - Pitch angles for blades 1, 2, and 3
+Azimuth                   - Blade 1 azimuth angle
+RotSpeed                  - Low-speed shaft and high-speed shaft speeds
+RotPwr
+RotThrust
+GenSpeed                  - Low-speed shaft and high-speed shaft speeds
+NacYaw                    - Nacelle yaw angle and nacelle yaw error estimate
+OoPDefl1                  - Blade 1 out-of-plane and in-plane deflections and tip twist
+IPDefl1                   - Blade 1 out-of-plane and in-plane deflections and tip twist
+TwstDefl1                 - Blade 1 out-of-plane and in-plane deflections and tip twist
+OoPDefl2                  - Blade 2 out-of-plane and in-plane deflections and tip twist
+IPDefl2                   - Blade 2 out-of-plane and in-plane deflections and tip twist
+TwstDefl2                 - Blade 2 out-of-plane and in-plane deflections and tip twist
+OoPDefl3                  - Blade 3 out-of-plane and in-plane deflections and tip twist
+IPDefl3                   - Blade 3 out-of-plane and in-plane deflections and tip twist
+TwstDefl3                 - Blade 3 out-of-plane and in-plane deflections and tip twist
+TwrClrnc1                 - Tip-to-tower clearance estimate for blades 1, 2, and 3
+TwrClrnc2                 - Tip-to-tower clearance estimate for blades 1, 2, and 3
+TwrClrnc3                 - Tip-to-tower clearance estimate for blades 1, 2, and 3
+NcIMUTAxs                 - Nacelle IMU translational accelerations (absolute) in the nonrotating, shaft coordinate system
+NcIMUTAys                 - Nacelle IMU translational accelerations (absolute) in the nonrotating, shaft coordinate system
+NcIMUTAzs                 - Nacelle IMU translational accelerations (absolute) in the nonrotating, shaft coordinate system
+TTDspFA                   - Tower fore-aft and side-to-side displacements and top twist
+TTDspSS                   - Tower fore-aft and side-to-side displacements and top twist
+TTDspTwst                 - Tower fore-aft and side-to-side displacements and top twist
+PtfmSurge                 - Platform translational surge, sway, and heave displacements
+PtfmSway                  - Platform translational surge, sway, and heave displacements
+PtfmHeave                 - Platform translational surge, sway, and heave displacements
+PtfmRoll                  - Platform rotational roll, pitch and yaw displacements
+PtfmPitch                 - Platform rotational roll, pitch and yaw displacements
+PtfmYaw                   - Platform rotational roll, pitch and yaw displacements
+PtfmTAxt                  - Platform translation accelerations (absolute) in the tower-base coordinate system
+PtfmTAyt                  - Platform translation accelerations (absolute) in the tower-base coordinate system
+PtfmTAzt                  - Platform translation accelerations (absolute) in the tower-base coordinate system
+RootFxc1                  - Out-of-plane shear, in-plane shear, and axial forces at the root of blade 1
+RootFyc1                  - Out-of-plane shear, in-plane shear, and axial forces at the root of blade 1
+RootFzc1                  - Out-of-plane shear, in-plane shear, and axial forces at the root of blade 1
+RootMxc1                  - In-plane bending, out-of-plane bending, and pitching moments at the root of blade 1
+RootMyc1                  - In-plane bending, out-of-plane bending, and pitching moments at the root of blade 1
+RootMzc1                  - In-plane bending, out-of-plane bending, and pitching moments at the root of blade 1
+RootFxc2                  - Out-of-plane shear, in-plane shear, and axial forces at the root of blade 2
+RootFyc2                  - Out-of-plane shear, in-plane shear, and axial forces at the root of blade 2
+RootFzc2                  - Out-of-plane shear, in-plane shear, and axial forces at the root of blade 2
+RootMxc2                  - In-plane bending, out-of-plane bending, and pitching moments at the root of blade 2
+RootMyc2                  - In-plane bending, out-of-plane bending, and pitching moments at the root of blade 2
+RootMzc2                  - In-plane bending, out-of-plane bending, and pitching moments at the root of blade 2
+RootFxc3                  - Out-of-plane shear, in-plane shear, and axial forces at the root of blade 3
+RootFyc3                  - Out-of-plane shear, in-plane shear, and axial forces at the root of blade 3
+RootFzc3                  - Out-of-plane shear, in-plane shear, and axial forces at the root of blade 3
+RootMxc3                  - In-plane bending, out-of-plane bending, and pitching moments at the root of blade 3
+RootMyc3                  - In-plane bending, out-of-plane bending, and pitching moments at the root of blade 3
+RootMzc3                  - In-plane bending, out-of-plane bending, and pitching moments at the root of blade 3
+Spn1MLxb1                 - Blade 1 local edgewise bending, flapwise bending, and pitching moments at span station 1 (approx. 50% span)
+Spn1MLyb1                 - Blade 1 local edgewise bending, flapwise bending, and pitching moments at span station 1 (approx. 50% span)
+Spn1MLzb1                 - Blade 1 local edgewise bending, flapwise bending, and pitching moments at span station 1 (approx. 50% span)
+Spn1MLxb2                 - Blade 2 local edgewise bending, flapwise bending, and pitching moments at span station 1 (approx. 50% span)
+Spn1MLyb2                 - Blade 2 local edgewise bending, flapwise bending, and pitching moments at span station 1 (approx. 50% span)
+Spn1MLzb2                 - Blade 2 local edgewise bending, flapwise bending, and pitching moments at span station 1 (approx. 50% span)
+Spn1MLxb3                 - Blade 3 local edgewise bending, flapwise bending, and pitching moments at span station 1 (approx. 50% span)
+Spn1MLyb3                 - Blade 3 local edgewise bending, flapwise bending, and pitching moments at span station 1 (approx. 50% span)
+Spn1MLzb3                 - Blade 3 local edgewise bending, flapwise bending, and pitching moments at span station 1 (approx. 50% span)
+RotThrust                 - Rotor thrust and low-speed shaft 0- and 90-rotating shear forces at the main bearing
+LSSGagFya                 - Rotor thrust and low-speed shaft 0- and 90-rotating shear forces at the main bearing
+LSSGagFza                 - Rotor thrust and low-speed shaft 0- and 90-rotating shear forces at the main bearing
+RotTorq                   - Rotor torque and low-speed shaft 0- and 90-rotating bending moments at the main bearing
+LSSGagMya                 - Rotor torque and low-speed shaft 0- and 90-rotating bending moments at the main bearing
+LSSGagMza                 - Rotor torque and low-speed shaft 0- and 90-rotating bending moments at the main bearing
+YawBrFxp                  - Fore-aft shear, side-to-side shear, and vertical forces at the top of the tower (not rotating with nacelle yaw)
+YawBrFyp                  - Fore-aft shear, side-to-side shear, and vertical forces at the top of the tower (not rotating with nacelle yaw)
+YawBrFzp                  - Fore-aft shear, side-to-side shear, and vertical forces at the top of the tower (not rotating with nacelle yaw)
+YawBrMxp                  - Side-to-side bending, fore-aft bending, and yaw moments at the top of the tower (not rotating with nacelle yaw)
+YawBrMyp                  - Side-to-side bending, fore-aft bending, and yaw moments at the top of the tower (not rotating with nacelle yaw)
+YawBrMzp                  - Side-to-side bending, fore-aft bending, and yaw moments at the top of the tower (not rotating with nacelle yaw)
+TwrBsFxt                  - Fore-aft shear, side-to-side shear, and vertical forces at the base of the tower (platform)
+TwrBsFyt                  - Fore-aft shear, side-to-side shear, and vertical forces at the base of the tower (platform)
+TwrBsFzt                  - Fore-aft shear, side-to-side shear, and vertical forces at the base of the tower (platform)
+TwrBsMxt                  - Side-to-side bending, fore-aft bending, and yaw moments at the base of the tower (platform)
+TwrBsMyt                  - Side-to-side bending, fore-aft bending, and yaw moments at the base of the tower (platform)
+TwrBsMzt                  - Side-to-side bending, fore-aft bending, and yaw moments at the base of the tower (platform)
+YawBrTAxp					Tower top fore-aft absolute accel.
+YawBrTAyp					Tower top side-side absolute accel.
+TwHt1RPyi					yi-component of the rotational position (relative to the inertia frame) of tower gage 1
+TwHt1MLxt                 - Local side-to-side bending, fore-aft bending, and yaw moments at tower gage 1 (approx. 50% elevation)
+TwHt1MLyt                 - Local side-to-side bending, fore-aft bending, and yaw moments at tower gage 1 (approx. 50% elevation)
+TwHt1MLzt                 - Local side-to-side bending, fore-aft bending, and yaw moments at tower gage 1 (approx. 50% elevation)
+TwHt1MLxt                 - Local side-to-side bending, fore-aft bending, and yaw moments at tower gage 1 (approx. 50% elevation)
+TwHt1MLyt                 - Local side-to-side bending, fore-aft bending, and yaw moments at tower gage 1 (approx. 50% elevation)
+TwHt1MLzt                 - Local side-to-side bending, fore-aft bending, and yaw moments at tower gage 1 (approx. 50% elevation)
+TwHt2MLxt                 - Local side-to-side bending, fore-aft bending, and yaw moments at tower gage 1 (approx. 50% elevation)
+TwHt2MLyt                 - Local side-to-side bending, fore-aft bending, and yaw moments at tower gage 1 (approx. 50% elevation)
+TwHt2MLzt                 - Local side-to-side bending, fore-aft bending, and yaw moments at tower gage 1 (approx. 50% elevation)
+TwHt3MLxt                 - Local side-to-side bending, fore-aft bending, and yaw moments at tower gage 1 (approx. 50% elevation)
+TwHt3MLyt                 - Local side-to-side bending, fore-aft bending, and yaw moments at tower gage 1 (approx. 50% elevation)
+TwHt3MLzt                 - Local side-to-side bending, fore-aft bending, and yaw moments at tower gage 1 (approx. 50% elevation)
+END of input file (the word "END" must appear in the first 3 columns of this last OutList line)
+---------------------------------------------------------------------------------------
