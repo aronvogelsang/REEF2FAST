@@ -8,13 +8,13 @@ namespace fs = std::filesystem;
 int main() {
 
     std::cout << "**************************************************************************\n";
-    std::cout << "*  REEF2FAST v2.4 - OpenFAST Input Generator for REEF3D Wavefields       *\n";
+    std::cout << "*  REEF2FAST v3.0 - OpenFAST Input Generator for NHFLOW Wavefields       *\n";
     std::cout << "*                                                                        *\n";    
     std::cout << "*  GitHub: https://github.com/aronvogelsang/REEF2FAST                    *\n";
     std::cout << "*  Developer: Aron Vogelsang                                             *\n";
     std::cout << "*  License: GNU General Public License v3.0 (GPL-3.0)                    *\n";
     std::cout << "*                                                                        *\n";
-    std::cout << "*  This program generates OpenFAST input files based on the REEF3D       *\n";
+    std::cout << "*  This program generates OpenFAST input files based on NHLOW            *\n";
     std::cout << "*  simulation data. It reads control parameters from 'control.txt' and   *\n";
     std::cout << "*  'ctrl.txt', interpolates wavefield data, and formats it according to  *\n";
     std::cout << "*  OpenFAST standards.                                                   *\n";
@@ -22,11 +22,10 @@ int main() {
     std::cout << "*  Ensure that the required input files are present:                     *\n";
     std::cout << "*  - 'control.txt' (grid & domain settings)                              *\n";
     std::cout << "*  - 'ctrl.txt' (wave parameters)                                        *\n";
-    std::cout << "*  - 'XXX.csv' (REEF3D wavefield data)                                   *\n";
+    std::cout << "*  - 'XXX.csv' (NHFLOW wavefield data)                                   *\n";
     std::cout << "*                                                                        *\n";
     std::cout << "*  Supported REEF3D solvers:                                             *\n";
     std::cout << "*  - REEF3D::NHFLOW (Non-Hydrostatic Flow Solver)                        *\n";
-    std::cout << "*  - REEF3D::CFD (Computational Fluid Dynamics Solver)                   *\n";
     std::cout << "*                                                                        *\n";
     std::cout << "*  Compatibility:                                                        *\n";
     std::cout << "*  - OpenFAST v4.0.2                                                     *\n";
