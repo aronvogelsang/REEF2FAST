@@ -1,0 +1,6 @@
+*.cpp linguist-language=C++
+*.hpp linguist-language=C++
+*.h   linguist-language=C++
+
+*.roff linguist-detectable=false
+*.1    linguist-detectable=false
