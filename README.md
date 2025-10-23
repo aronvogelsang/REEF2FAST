@@ -45,6 +45,8 @@ The executable `reef2fast` will be created in the `build/` directory.
 
 ### Preparation
 
+Create direcetory named `data/` inside the REEF2FAST main directory before running!!!
+
 Ensure the following input files are placed in the `data/` directory:
 
 1. `control.txt` – DiveMESH grid & domain configuration  
