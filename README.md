@@ -1,10 +1,9 @@
 # REEF2FAST
 
 **Version:** 3.0  
-**Developer:** Aron Vogelsang, aron.vogelsang@tu-braunschweig.de 
-
+**Developer:** Aron Vogelsang
+aron.vogelsang@tu-braunschweig.de  
 **License:** GNU GPL v3.0  
-**Repository:** https://github.com/aronvogelsang/REEF2FAST  
 
 ## Overview
 
